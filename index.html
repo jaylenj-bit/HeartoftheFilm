@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Book a Session — Luxe Lens Studio</title>
+  <meta name="description" content="Professional photography bookings. Elegant, modern, and easy to use."/>
+  <style>
+    :root{
+      --bg:#0b0b0f;            /* near-black */
+      --panel:#12121a;         /* card bg */
+      --text:#e8e8ef;          /* light text */
+      --muted:#b8b8c9;         /* secondary text */
+      --purple:#7b57ff;        /* primary accent */
+      --purple-2:#6f3ee6;      /* accent depth */
+      --gold-1:#d4af37;        /* glossy gold */
+      --gold-2:#f6e27a;        /* glossy highlight */
+      --gold-3:#b88a1b;        /* shadow gold */
+      --ring: 0 0 0 .125rem rgba(123,87,255,.35);
+      --radius-xl: 1.25rem;
+      --radius: .9rem;
+      --shadow-soft: 0 10px 30px rgba(0,0,0,.4);
+      --shadow-inset: inset 0 1px 0 rgba(255,255,255,.05), inset 0 -1px 0 rgba(0,0,0,.35);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color:var(--text);
+      background: radial-gradient(1200px 600px at 70% -10%, rgba(123,87,255,.18), transparent 60%),
+                  radial-gradient(900px 500px at -10% 20%, rgba(246,226,122,.08), transparent 60%),
+                  var(--bg);
+      line-height:1.55;
+    }
+
+    a{color:var(--text); text-decoration:none}
+    img{max-width:100%; display:block}
+
+    .container{width:min(1100px, 92vw); margin-inline:auto}
+
+    /* Header */
+    header{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter: blur(8px);
+      background: linear-gradient(180deg, rgba(11,11,15,.9), rgba(11,11,15,.65));
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:1rem; padding:.9rem 0;
+    }
+    .brand{
+      display:flex; align-items:center; gap:.75rem; font-weight:700; letter-spacing:.4px;
+    }
+    .brand .mark{width:38px; aspect-ratio:1; border-radius:12px; 
+      background: conic-gradient(from 210deg, var(--gold-2), var(--gold-1) 30%, var(--gold-3) 60%, var(--gold-1) 85%, var(--gold-2));
+      box-shadow: 0 0 0 1px rgba(0,0,0,.6), inset 0 1px 10px rgba(255,255,255,.35);
+    }
+    .brand span{font-size:1.05rem}
+    .nav a.cta{padding:.7rem 1rem; border-radius:999px; font-weight:600}
+
+    /* Gold button with glossy sheen */
+    .btn{position:relative; display:inline-grid; place-items:center; border:0; cursor:pointer; 
+      padding:.9rem 1.2rem; border-radius:999px; font-weight:700; letter-spacing:.3px; 
+      transition: transform .15s ease, box-shadow .15s ease;}
+    .btn:active{transform:translateY(1px)}
+    .btn--gold{
+      color:#201a05;
+      background: linear-gradient(160deg, var(--gold-2), var(--gold-1) 45%, var(--gold-3));
+      box-shadow: 0 8px 30px rgba(212,175,55,.35), inset 0 1px 0 rgba(255,255,255,.45);
+    }
+    .btn--gold::after{
+      content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+      background: linear-gradient( to bottom, rgba(255,255,255,.35), transparent 40% );
+      mix-blend-mode:screen; opacity:.7; transition:opacity .2s ease;
+    }
+    .btn--gold:hover{ box-shadow: 0 12px 36px rgba(212,175,55,.45) }
+
+    /* Hero */
+    .hero{ padding: clamp(2.2rem, 5vw, 4rem) 0 1rem; }
+    .hero-wrap{ display:grid; grid-template-columns: 1.2fr .9fr; gap:2rem; align-items:center; }
+    .hero h1{ font-size: clamp(1.9rem, 3vw, 2.6rem); margin:.2rem 0 .6rem; }
+    .hero p{ color:var(--muted); max-width:58ch }
+    .hero-card{
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));
+      border:1px solid rgba(255,255,255,.08); border-radius: var(--radius-xl);
+      padding:1.2rem; box-shadow: var(--shadow-soft), var(--shadow-inset);
+    }
+    .hero-stats{ display:flex; gap:1rem; flex-wrap:wrap; margin-top:1rem }
+    .pill{
+      border-radius:999px; padding:.45rem .8rem; font-size:.85rem; color:#fff;
+      background: linear-gradient( 160deg, rgba(123,87,255,.35), rgba(123,87,255,.1) );
+      border:1px solid rgba(123,87,255,.45);
+    }
+
+    /* Sections */
+    section{ padding: clamp(2rem, 4vw, 3rem) 0 }
+    .section-title{ font-size:1.4rem; margin:0 0 .8rem}
+    .section-sub{ color:var(--muted); margin:0 0 1.2rem }
+
+    /* Gallery */
+    .gallery{
+      display:grid; grid-template-columns: repeat(12, 1fr); gap:.75rem;
+    }
+    .gallery figure{ margin:0; overflow:hidden; border-radius: .9rem; position:relative; 
+      border:1px solid rgba(255,255,255,.08); background:var(--panel)
+    }
+    .gallery img{ width:100%; height:100%; object-fit:cover; transform:scale(1.03); transition: transform .35s ease, opacity .35s ease }
+    .gallery figure:hover img{ transform:scale(1.08) }
+    .g-span-6{ grid-column: span 6 }
+    .g-span-3{ grid-column: span 3 }
+    .g-span-4{ grid-column: span 4 }
+    .g-span-8{ grid-column: span 8 }
+    @media (max-width: 900px){
+      .hero-wrap{ grid-template-columns: 1fr }
+      .g-span-6, .g-span-3, .g-span-4, .g-span-8{ grid-column: span 6 }
+    }
+    @media (max-width: 640px){
+      .g-span-6, .g-span-3, .g-span-4, .g-span-8{ grid-column: span 12 }
+    }
+
+    /* Booking form */
+    .form-card{
+      background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015));
+      border:1px solid rgba(255,255,255,.08); border-radius: var(--radius-xl);
+      padding: clamp(1rem, 3vw, 1.4rem); box-shadow: var(--shadow-soft), var(--shadow-inset);
+    }
+    .grid{ display:grid; gap:1rem; grid-template-columns: repeat(12, 1fr) }
+    .col-6{ grid-column: span 6 }
+    .col-12{ grid-column: span 12 }
+    @media (max-width: 760px){ .col-6{ grid-column: span 12 } }
+
+    label{ display:block; font-size:.9rem; color:var(--muted); margin:0 0 .35rem }
+    input, select, textarea{
+      width:100%; border-radius:.8rem; border:1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, #0f0f15, #0a0a11);
+      color:var(--text); padding:.85rem .95rem; outline:none; 
+      transition: box-shadow .15s ease, border-color .15s ease;
+    }
+    input::placeholder, textarea::placeholder{ color:#8a8aa3 }
+    input:focus, select:focus, textarea:focus{
+      border-color: rgba(123,87,255,.7); box-shadow: var(--ring);
+    }
+
+    .actions{ display:flex; gap:.8rem; align-items:center; flex-wrap:wrap; margin-top:.4rem }
+    .note{ color:var(--muted); font-size:.85rem }
+
+    /* Footer */
+    footer{ padding:2rem 0; border-top:1px solid rgba(255,255,255,.06); color:var(--muted) }
+    .footer-grid{ display:grid; grid-template-columns: 1fr auto; align-items:center }
+
+    /* Tiny helper for visually-hidden */
+    .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0 }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <span class="mark" aria-hidden="true"></span>
+        <span>Luxe Lens Studio</span>
+      </div>
+      <a href="#booking" class="cta btn btn--gold">Book Now</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-wrap">
+        <div>
+          <p class="pill" aria-hidden="true">Premium • Portraits • Events • Brand</p>
+          <h1>Luxury-grade photography with a modern, editorial finish.</h1>
+          <p>From intimate portraits to full-scale brand campaigns, we craft images with depth, contrast, and a signature glow. Tell us your vision—then step in front of the lens and enjoy the experience.</p>
+          <div class="hero-stats">
+            <span class="pill">5★ Rated</span>
+            <span class="pill">Same‑week availability</span>
+            <span class="pill">On‑location & studio</span>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="gallery" aria-label="Featured shots">
+            <figure class="g-span-6"><img src="https://images.unsplash.com/photo-1519648023493-d82b5f8d7fd9?q=80&w=1400&auto=format&fit=crop" alt="Editorial portrait with dramatic lighting"></figure>
+            <figure class="g-span-6"><img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1400&auto=format&fit=crop" alt="Product closeup with glossy highlights"></figure>
+            <figure class="g-span-8"><img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1600&auto=format&fit=crop" alt="Candid couple session"></figure>
+            <figure class="g-span-4"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop" alt="Event atmosphere shot"></figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO PREVIEW -->
+    <section id="portfolio">
+      <div class="container">
+        <h2 class="section-title">Client Showcase</h2>
+        <p class="section-sub">A quick look at recent work. Replace these with your own images and captions.</p>
+        <div class="gallery">
+          <figure class="g-span-4"><img src="https://images.unsplash.com/photo-1559595500-e15296bdbb48?q=80&w=1200&auto=format&fit=crop" alt="Graduation portrait"></figure>
+          <figure class="g-span-4"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1200&auto=format&fit=crop" alt="Beauty portrait"></figure>
+          <figure class="g-span-4"><img src="https://images.unsplash.com/photo-1519741202294-5f7f1b774a8c?q=80&w=1200&auto=format&fit=crop" alt="Brand product"></figure>
+          <figure class="g-span-6"><img src="https://images.unsplash.com/photo-1495562569060-2eec283d3391?q=80&w=1400&auto=format&fit=crop" alt="Engagement session"></figure>
+          <figure class="g-span-6"><img src="https://images.unsplash.com/photo-1516726817505-f5ed825624d8?q=80&w=1400&auto=format&fit=crop" alt="Corporate event"></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- BOOKING FORM -->
+    <section id="booking">
+      <div class="container">
+        <h2 class="section-title">Book Your Session</h2>
+        <p class="section-sub">Submit the form below and we’ll confirm details by email. Fields marked * are required.</p>
+        <form class="form-card" action="https://formspree.io/f/your-endpoint" method="POST">
+          <div class="grid">
+            <div class="col-6">
+              <label for="name">Full Name *</label>
+              <input id="name" name="name" type="text" placeholder="Jane Doe" autocomplete="name" required />
+            </div>
+            <div class="col-6">
+              <label for="email">Email *</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
+            </div>
+            <div class="col-6">
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" type="tel" placeholder="(555) 000‑0000" autocomplete="tel" />
+            </div>
+            <div class="col-6">
+              <label for="service">Service Type *</label>
+              <select id="service" name="service" required>
+                <option value="" disabled selected>Select a service</option>
+                <option>Portrait Session</option>
+                <option>Couples / Engagement</option>
+                <option>Event Coverage</option>
+                <option>Brand / Product</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="col-6">
+              <label for="date">Preferred Date *</label>
+              <input id="date" name="date" type="date" required />
+            </div>
+            <div class="col-6">
+              <label for="time">Preferred Time</label>
+              <input id="time" name="time" type="time" />
+            </div>
+            <div class="col-12">
+              <label for="location">Location</label>
+              <input id="location" name="location" type="text" placeholder="Studio, on‑location, venue name, etc." />
+            </div>
+            <div class="col-12">
+              <label for="message">Notes / Vision</label>
+              <textarea id="message" name="message" rows="5" placeholder="Share your ideas, mood, vibe, references…"></textarea>
+            </div>
+          </div>
+
+          <!-- Formspree helpers (optional) -->
+          <input type="hidden" name="_subject" value="New Photography Booking" />
+          <input type="hidden" name="_template" value="table" />
+
+          <div class="actions">
+            <button class="btn btn--gold" type="submit">Submit Booking Request</button>
+            <span class="note">You'll receive a confirmation email shortly after submission.</span>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <small>© <span id="y"></span> Luxe Lens Studio. All rights reserved.</small>
+      <small>Black • Purple • Glossy Gold</small>
+    </div>
+  </footer>
+
+  <script>
+    // Update year
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
